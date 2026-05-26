@@ -1,0 +1,15 @@
+{
+  "version": "2.1.0",
+  "release": "2026-05-26",
+  "codename": "Sentinel",
+  "semver": {
+    "major": 2,
+    "minor": 1,
+    "patch": 0
+  },
+  "compatibility": {
+    "min_opencode": "0.1.0",
+    "platforms": ["windows", "macos", "linux"],
+    "agents": ["opencode", "claude-code", "cursor", "codex", "copilot-cli", "gemini-cli"]
+  }
+}

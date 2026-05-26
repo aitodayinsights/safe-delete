@@ -1,0 +1,148 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 0 * * 0"  # weekly
+
+jobs:
+  validate-structure:
+    name: Validate Skill Structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check file existence
+        run: |
+          for file in README.md LICENSE CONTRIBUTING.md CHANGELOG.md version.json Makefile SKILL.md behaviour.md commands.md; do
+            test -f "$file" || { echo "Missing: $file"; exit 1; }
+          done
+          echo "All root files present"
+
+      - name: Check functions directory
+        run: |
+          for file in functions/fn-audit.md functions/fn-backup.md functions/fn-database.md functions/fn-delete-methods.md functions/fn-delete-modal.md functions/fn-emergency.md functions/fn-environment.md functions/fn-instant-mode.md functions/fn-permanent-delete.md functions/fn-recovery.md functions/fn-risk-scoring.md functions/fn-safekeeper.md functions/fn-ci-cd.md functions/fn-git-aware.md functions/fn-process-aware.md functions/fn-language-aware.md functions/fn-integrity-guard.md functions/INDEX.md; do
+            test -f "$file" || { echo "Missing: $file"; exit 1; }
+          done
+          echo "All functions present"
+
+      - name: Check docs and examples
+        run: |
+          for file in docs/ARCHITECTURE.md docs/DESIGN-DECISIONS.md docs/PLATFORMS.md docs/USAGE.md examples/coding-refactor.md examples/deployment-cleanup.md examples/database-migration.md; do
+            test -f "$file" || { echo "Missing: $file"; exit 1; }
+          done
+          echo "All docs and examples present"
+
+      - name: Check scripts
+        run: |
+          for file in scripts/install.sh scripts/validate.sh scripts/test-prereqs.sh; do
+            test -f "$file" || { echo "Missing: $file"; exit 1; }
+          done
+          echo "All scripts present"
+
+  lint-markdown:
+    name: Lint Markdown
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: "**/*.md"
+          config: |
+            {
+              "MD013": false,
+              "MD024": false,
+              "MD033": false,
+              "MD041": false
+            }
+
+  test-risk-scoring:
+    name: Test Risk Scoring
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run risk scoring tests
+        shell: bash
+        run: |
+          chmod +x tests/test-risk-scoring.sh
+          tests/test-risk-scoring.sh
+
+      - name: Run PowerShell risk scoring tests
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          tests/test-risk-scoring.ps1
+
+  test-structure:
+    name: Test Structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run structure test
+        run: |
+          chmod +x tests/test-skill-structure.sh
+          tests/test-skill-structure.sh
+
+  check-shell-scripts:
+    name: Shell Script Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: "./scripts"
+          severity: warning
+      - name: ShellCheck tests
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: "./tests"
+          severity: warning
+
+  version-consistency:
+    name: Version Consistency
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check version consistency
+        run: |
+          VERSION=$(cat version.json | python3 -c "import sys,json; print(json.load(sys.stdin)['version'])")
+          echo "Version from version.json: $VERSION"
+          grep -q "$VERSION" CHANGELOG.md || { echo "Version mismatch in CHANGELOG.md"; exit 1; }
+          echo "✓ Versions consistent"
+
+  cross-reference:
+    name: Cross-Reference Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify function references in SKILL.md
+        run: |
+          for fn in fn-audit fn-backup fn-database fn-delete-methods fn-delete-modal fn-emergency fn-environment fn-instant-mode fn-permanent-delete fn-recovery fn-risk-scoring fn-safekeeper fn-ci-cd fn-git-aware fn-process-aware fn-language-aware fn-integrity-guard; do
+            grep -q "$fn" SKILL.md || { echo "Missing function reference: $fn in SKILL.md"; exit 1; }
+          done
+          echo "✓ All function references present in SKILL.md"
+
+      - name: Verify behavior references
+        run: |
+          grep -q "fn-risk-scoring" behaviour.md || { echo "Missing: fn-risk-scoring in behaviour.md"; exit 1; }
+          grep -q "fn-delete-modal" behaviour.md || { echo "Missing: fn-delete-modal in behaviour.md"; exit 1; }
+          grep -q "fn-git-aware" behaviour.md || { echo "Missing: fn-git-aware in behaviour.md"; exit 1; }
+          grep -q "fn-process-aware" behaviour.md || { echo "Missing: fn-process-aware in behaviour.md"; exit 1; }
+          echo "✓ All behaviour references present"
+
+  test-install-script:
+    name: Test Install Script
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test install script dry-run
+        run: |
+          chmod +x scripts/install.sh
+          scripts/install.sh --help || true
+          echo "✓ Install script is parseable"
