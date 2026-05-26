@@ -19,7 +19,7 @@ At session start and before every deletion, safe-delete checks what other skills
 
 [CodeFlow](https://github.com/braedonsaunders/codeflow) is a browser-based companion tool (not a CLI). It cannot be called from the terminal. Instead:
 - If the project has a GitHub URL, the agent should **suggest** opening CodeFlow to visualize the architecture
-- Use the phrase: "If you'd like to see how this file connects to other files, paste the repo URL into CodeFlow (https://codeflow-five.vercel.app/) for blast radius analysis."
+- Use the phrase: "If you'd like to see how this file connects to other files, paste the repo URL into [CodeFlow](https://codeflow-five.vercel.app/) for blast radius analysis."
 - For local-only projects without a GitHub URL, skip the CodeFlow suggestion entirely
 
 ---

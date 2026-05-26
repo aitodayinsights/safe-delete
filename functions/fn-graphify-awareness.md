@@ -79,9 +79,9 @@ find . -newer graphify-out/graph.json -name "*.py" -o -name "*.js" -o -name "*.t
 └──────────────────────────────────────────────────────────────┘
 ```
 
-3. If [1] Build: Run `graphify extract . --no-viz` (API-based extraction) or `graphify query "..."` 
-4. If [2] Skip: Fall back to `fn-language-aware.md` for static import analysis
-5. If [3] Schedule: Flag for next session, skip for now
+1. If [1] Build: Run `graphify extract . --no-viz` (API-based extraction) or `graphify query "..."` 
+2. If [2] Skip: Fall back to `fn-language-aware.md` for static import analysis
+3. If [3] Schedule: Flag for next session, skip for now
 
 ### If graphify is NOT installed
 

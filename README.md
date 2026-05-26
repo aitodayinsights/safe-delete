@@ -4,8 +4,8 @@
 
 [![Version](https://img.shields.io/badge/version-2.1.0-blue.svg)](version.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)]()
-[![Agents](https://img.shields.io/badge/agents-OpenCode%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Codex%20%7C%20Copilot%20%7C%20Gemini-purple)]()
+[![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)](PLATFORMS.md)
+[![Agents](https://img.shields.io/badge/agents-OpenCode%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Codex%20%7C%20Copilot%20%7C%20Gemini-purple)](USAGE.md#compatibility)
 
 ```ascii
 ┌─────────────────────────────────────────────────────────────────────────┐
