@@ -7,21 +7,9 @@
 [![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)](PLATFORMS.md)
 [![Agents](https://img.shields.io/badge/agents-OpenCode%20%7C%20Claude%20Code%20%7C%20Cursor%20%7C%20Codex%20%7C%20Copilot%20%7C%20Gemini-purple)](USAGE.md#compatibility)
 
-```ascii
-┌─────────────────────────────────────────────────────────────────────────┐
-│                                                                          │
-│   YOU: "refactor this module"   AGENT: "That'll delete a file —           │
-│                                         let's make sure it's safe first" │
-│                                                                          │
-│   ┌─────────────────────────────────────────────────────────────────┐   │
-│   │ ⚠ DELETE MODAL                                                 │   │
-│   │                                                                  │   │
-│   │ [1] Recycle Bin      [2] Backup+Delete  [3] Skip                │   │
-│   │ [4] Find Alternative [5] Permanent (guarded)                    │   │
-│   └─────────────────────────────────────────────────────────────────┘   │
-│                                                                          │
-└─────────────────────────────────────────────────────────────────────────┘
-```
+<p align="center">
+  <img src="images/cover.png" alt="Safe-Delete Cover" width="700">
+</p>
 
 ---
 
@@ -208,6 +196,16 @@ Agent: "This task requires:
 # You choose [1] — Recycle Bin
 # File is safely moved, can be restored any time
 ```
+
+---
+
+## Demo
+
+<p align="center">
+  <img src="images/claude-code-in-action.png" alt="Safe-Delete in Claude Code" width="700">
+  <br>
+  <em>Safe-Delete modal in action during a Claude Code session</em>
+</p>
 
 ---
 
